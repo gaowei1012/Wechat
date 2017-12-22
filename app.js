@@ -10,9 +10,9 @@ app.get('/', (req, res) => {
     wechatApp.getAccessToken().then((data) => {
         res.send(data);
     })
-})
+});
 
 app.listen(3000, (err) => {
     console.log(err);
-})
+});
 
