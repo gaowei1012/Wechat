@@ -1,0 +1,22 @@
+{
+  "name": "wechat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gmw-zjw/Wechat.git"
+  },
+  "author": "执念",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gmw-zjw/Wechat/issues"
+  },
+  "homepage": "https://github.com/gmw-zjw/Wechat#readme",
+  "dependencies": {
+    "express": "4.16.2"
+  }
+}
