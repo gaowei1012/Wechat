@@ -1,6 +1,7 @@
 const express = require('express'),
-    config = require('./config'),
-    wechat = require('./wechat/wechat');
+    wechat = require('./wechat/wechat'),
+    config = require('./config');
+    
 
 const app = express();
 
