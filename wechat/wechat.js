@@ -122,7 +122,7 @@ WeChat.prototype.getAccessToken = function () {
  * 微信消息处理
  */
 
- WeChat.prototype.handleMsg = (req, res) => {
+WeChat.prototype.handleMsg = (req, res) => {
 
     var buffer = [], that = this;
 
