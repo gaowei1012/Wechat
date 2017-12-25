@@ -6,13 +6,21 @@ const app = express();
 
 var wechatApp = new WeChat(config); // 实例 wechat 模块
 
-app.get('/', (req, res) => {
+// get 端口链接请求
+app.get('/', (request, res) => {
+    wechatApp.auth(req, res);
+});
+
+// post 端口链接请求
+app.post('/', (req, res) => {
+    wechatApp.handleMsg(req, res);
+})
+
+app.get('/getAccessToken', (req, res) => {
     wechatApp.getAccessToken().then((data) => {
         res.send(data);
     })
 });
 
-app.listen(3000, (err) => {
-    console.log(err);
-});
+app.listen(3000);
 
