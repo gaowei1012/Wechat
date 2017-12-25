@@ -4,14 +4,18 @@ const crypto = require('crypto'),
      https = require('https'),
      util = require('util'),
      fs = require('fs'),
-     accessTokenJson =require('./access_token');
+     accessTokenJson =require('./access_token'),
+     urltil = require('url'),
+     accessTokenJson = require('./access_token'),
+     menus = require('./menus'),
+     parseString = require('xm12js').parseString,
+     msg = require('./msg'),
+     cryptoGraphy = require('./cryptoGraphy');
 
-const WeChat = function (config) {
-    this.config = config;
-    this.token = config.token;
-}
-
-
+/**
+ * 构建 WeChat 对象
+ * @param {JSON} config 微信配置文件
+ */
 var WeChat = function (config) {
     // 设置 wechat 对象属性 config
     this.config = config;
@@ -26,11 +30,10 @@ var WeChat = function (config) {
 
     this.apiDomain = config.apiURL;
 
-    /**
- * https get 请求
- * @param {*} url 
- */
-
+        /**
+     * https get 请求
+     * @param {String} url 请求地址
+     */
     this.requestGet = function (url) {
 
         return new Promise((resolve, reject) => {
@@ -49,6 +52,56 @@ var WeChat = function (config) {
             }).on('error', (err) => {
                 reject(err);
             })
+        })
+    }
+    /**
+     * 用于处理 https post 请求方法
+     * @param { Stirng } url 请求地址
+     * @param {JSON} data 提交的数据
+     */
+    this,requestPost = (url, data) => {
+        return new Promise((resolve ,reject) => {
+            // 解析URL地址
+            var urlData = urltil.parse(url);
+            //设置https.request options 传入参数
+            var options = {
+                // 目标主机地址
+                hostname: urlData.hostname,
+                // 目标地址
+                path: urlData.path,
+                //请求方法
+                method: 'POST',
+                // 头部协议
+                headers: {
+                    'Contnet-Type': 'application/x-www-form-urlencoded',
+                    'Contnet-Lenght': Buffer.byteLength(data, 'utf-8')
+                }
+            };
+
+            var req = this.request(options, (res) => {
+                var buffer = [],
+                    result = '';
+                // 用于监听 data 事件 完成书籍接收
+                res.on('data', (data) => {
+                    buffer.push(data);
+                });
+
+                //用于监听end 事件 完成数据接收
+                res.on('end', () => {
+                    result = Buffer.concat(buffer).toString('utf-8');
+                    resolve(result);
+                })
+            })
+            // 监听 error 错误事件
+            .on('error', (err) => {
+                console.log(err);
+                reject(err);
+            });
+
+            // 传入数据
+            req.write(data);
+            req.end();
+
         })
     }
 }
